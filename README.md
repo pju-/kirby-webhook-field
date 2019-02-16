@@ -49,7 +49,7 @@ Example:
 ```yml
 fields:
   deploy:
-    type: deploy
+    type: webhooks
     label: Deploy Site
 ```
 
@@ -74,7 +74,7 @@ You do not need to set a JWS secret. Use a secret key in the route name instead.
 
 Name | Type | Default | Description
 --- | --- | --- | ---
-route | `String` | `"webhooks"` | The API endpoint for incoming webhooks. The endpoints for updating the status to success/error will be `https://www.yoursite.com/api/YOUR_ROUTE/success` and `https://www.yoursite.com/api/YOUR_ROUTE/error` (unless you have configured a [custom API location](https://getkirby.com/docs/guide/api/introduction#custom-api-location) in Kirby).
+route | `String` | `'webhooks'` | The API endpoint for incoming webhooks. The endpoints for updating the status to success/error will be `https://www.yoursite.com/api/YOUR_ROUTE/success` and `https://www.yoursite.com/api/YOUR_ROUTE/error` (unless you have configured a [custom API location](https://getkirby.com/docs/guide/api/introduction#custom-api-location) in Kirby).
 hooks | `Array` | `[]` | An array of hooks that you want to be able to trigger. Each entry consists of a structured array of (see [webhook structure](#webhook-structure))
 lables | `Array` | [see below]() | An array of translations. Keys and default values can be found [here]().
 
@@ -86,7 +86,7 @@ Name | Type | Default | Description
 --- | --- | --- | ---
 name | `String` | - | The key that can be used in the blueprint field.
 url | `String` | - | The (outgoing) URL that will be called for the webhook.
-method | `String` (http method) | `post` | Optional: The http method for the outgoing webhook.
+method | `String` (http method) | `'post'` | Optional: The http method for the outgoing webhook.
 payload | `Array`, `callable` | `[]` | Optional: The payload that will be send to the outgoing webhook. Can be an array or a function/closure that returns an array.
 
 
@@ -95,7 +95,7 @@ payload | `Array`, `callable` | `[]` | Optional: The payload that will be send t
 
 Name | Type | Default | Description
 --- | --- | --- | ---
-label | `String` | `Deploy Site` | The label for the field
+label | `String` | `'Deploy Site'` | The label for the field
 hook | `String` |  | The name of the webhook that this field triggers (using the `name` of a webhook configured in your `config.php`. If it is empty, the first webhook will be used instead.
 monochrome | `Boolean` | `false` | If the icons should be black and white (default is colour icons).
 
