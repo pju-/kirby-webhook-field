@@ -9,7 +9,7 @@ Probably the most common use for a webhook would be to trigger a build or deploy
 
 This plugin can be configured to do a lot of things. However, I tried to give it some sane defaults, so a basic use case can be set up as quickly as possible.
 
-** If you just want to trigger a deploy hook, for example to on netlify, follow this guide: **
+**Follow this guide if you just want to trigger a deploy hook, for example to on netlify:**
 
 ### 1 - Install
 
@@ -27,7 +27,7 @@ Example:
 'pju.kirby-webhooks.route' => 'deploy-YOUR_API_TOKEN'
 ```
 
-**Services**
+**Hooks**
 
 An array of the webhooks that you want to provide.
 
@@ -69,31 +69,34 @@ You do not need to set a JWS secret. Use a secret key in the route name instead.
 
 ## Options Overview
 
-### General options - config.php
+### General options
+*config.php*
 
 Name | Type | Default | Description
 --- | --- | --- | ---
 route | `String` | `"webhooks"` | The API endpoint for incoming webhooks. The endpoints for updating the status to success/error will be `https://www.yoursite.com/api/YOUR_ROUTE/success` and `https://www.yoursite.com/api/YOUR_ROUTE/error` (unless you have configured a [custom API location](https://getkirby.com/docs/guide/api/introduction#custom-api-location) in Kirby).
-services | `Array` | `[]` | An array of services/hooks. Each service entry consists of a structured like this: `['name' => 'netlify', 'hook' => 'https://api.netlify.com/build_hooks/YOUR_BUILD_HOOK']`
+hooks | `Array` | `[]` | An array of hooks that you want to be able to trigger. Each entry consists of a structured array of (see [webhook structure](#webhook-structure))
 lables | `Array` | [see below]() | An array of translations. Keys and default values can be found [here]().
 
 
-### Webhook Structure (*pju.deploy.webhooks*)
+### Webhook Structure
+*pju.kirby-webhooks.hooks*
 
 Name | Type | Default | Description
 --- | --- | --- | ---
 name | `String` | - | The key that can be used in the blueprint field.
 url | `String` | - | The (outgoing) URL that will be called for the webhook.
 method | `String` (http method) | `post` | Optional: The http method for the outgoing webhook.
-payload | `Array`, `callable` | [] | Optional: The payload that will be send to the outgoing webhook. Can be an array or a function/closure that returns an array.
+payload | `Array`, `callable` | `[]` | Optional: The payload that will be send to the outgoing webhook. Can be an array or a function/closure that returns an array.
 
 
-### Field options - individual to each blueprint
+### Field options
+*individual to each blueprint*
 
 Name | Type | Default | Description
 --- | --- | --- | ---
-label | `String` | 'Webhook' | The label for the field
-service | `String` |  | The service that this field triggers (using the `name` of a service configured in your `config.php`. If it is empty, the first service will be used instead.
+label | `String` | `Deploy Site` | The label for the field
+hook | `String` |  | The name of the webhook that this field triggers (using the `name` of a webhook configured in your `config.php`. If it is empty, the first webhook will be used instead.
 monochrome | `Boolean` | `false` | If the icons should be black and white (default is colour icons).
 
 
