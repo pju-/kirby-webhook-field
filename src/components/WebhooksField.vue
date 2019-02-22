@@ -63,7 +63,10 @@ export default {
 
       const url = this.hook.url;
       const success = () => console.info('Webhook triggered');
-      const error = () => console.info('Could not reach webhook URL');
+      const error = () => {
+        console.info('Could not reach webhook URL');
+        this.setStatus('error');
+      };
 
       request(url, 'POST', success, error);
     },
@@ -84,7 +87,7 @@ export default {
       this.status = status;
 
       const url = `/webhooks/${this.hook.name}/${status}`;
-      const success = () => console.info('Webhook status successfully saved');
+      const success = () => console.info('Webhook status successfully updated');
       const error = () => console.info('There was an error with updating the status :(');
 
       request(url, 'GET', success, error);

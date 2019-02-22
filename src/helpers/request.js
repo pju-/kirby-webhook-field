@@ -5,10 +5,9 @@ export function request(url, method, successHandler, errorHandler) {
 
   http.onreadystatechange = () => {
     if (http.status == 200 && http.readyState == 4) {
-      successHandler(http);
+      if (successHandler) successHandler(http);
     } else if (http.status !== 200) {
-      this.status = 'error';
-      errorHandler(http);
+      if (errorHandler) errorHandler(http);
     }
   };
 
