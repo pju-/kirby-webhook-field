@@ -1,0 +1,22 @@
+{
+    "name": "pju/deploy",
+    "description": "A Kirby 3 plugin providing a field to easily deploy your site to services such as Netlify using webhooks",
+    "type": "kirby-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Philip Jonas Ulrich",
+            "email": "hi@philipjonas.cc"
+        }
+    ],
+    "autoload": {
+        "files": ["config.php"],
+        "psr-4": {
+            "pju\\": "classes/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true
+    },
+    "require": {}
+}
