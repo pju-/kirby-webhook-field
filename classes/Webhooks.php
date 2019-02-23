@@ -8,7 +8,24 @@ class Webhooks
 {
   private static $allowed = ['success', 'progress', 'error'];
 
-  public static function getHook(String $name): array
+  private static function formatHookConfig(array $hooks, string $name): array
+  {
+    $config = $hooks[$name];
+
+    if (is_string($config))
+    {
+      $config = ['url' => $config];
+    }
+
+    if (!isset($config['method']))
+    {
+      $config['method'] = 'POST';
+    }
+
+    return array_merge(['name' => $name], $config);
+  }
+
+  public static function getHook(string $name): array
   {
     $hooks = kirby()->option('pju.webhooks.hooks');
 
@@ -20,17 +37,17 @@ class Webhooks
       reset($hooks);
       $firstKey = key($hooks);
 
-      return array_merge(['name' => $firstKey], $hooks[$firstKey]);
+      return Webhooks::formatHookConfig($hooks, $firstKey);
     }
 
     if (!isset($hooks[$name])) {
       return ['name' => 'Hook not found'];
     };
 
-    return array_merge(['name' => $name], $hooks[$name]);
+    return Webhooks::formatHookConfig($hooks, $name);
   }
 
-  public static function setStatus(String $hook, String $status)
+  public static function setStatus(string $hook, string $status)
   {
     if (!in_array($status, Webhooks::$allowed))
     {
@@ -51,7 +68,7 @@ class Webhooks
     return 'success';
   }
 
-  public static function getStatus(String $hookName): array
+  public static function getStatus(string $hookName): array
   {
     $hooks = kirby()->option('pju.webhooks.hooks');
 

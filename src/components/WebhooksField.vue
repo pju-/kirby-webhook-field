@@ -68,7 +68,7 @@ export default {
         this.setStatus('error');
       };
 
-      request(url, 'POST', success, error);
+      request(url, this.hook.method, success, error);
     },
     getStatus() {
       const url = `/webhooks/${this.hook.name}/status`;
@@ -81,7 +81,7 @@ export default {
       };
       const error = () => console.info('There was an error with checking the status :(');
 
-      request(url, 'GET', success, error);
+      request(url, 'POST', success, error);
     },
     setStatus(status) {
       this.status = status;
@@ -90,7 +90,7 @@ export default {
       const success = () => console.info('Webhook status successfully updated');
       const error = () => console.info('There was an error with updating the status :(');
 
-      request(url, 'GET', success, error);
+      request(url, 'POST', success, error);
     }
   },
   watch: {
