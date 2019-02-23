@@ -3,7 +3,7 @@ use \pju\Webhooks;
 
 Kirby::plugin('pju/webhooks', [
   'options' => [
-    'route' => 'webhooks',
+    'endpoint' => 'webhooks',
     'hooks' => [],
     'labels' => [
       'new' => [
@@ -63,6 +63,9 @@ Kirby::plugin('pju/webhooks', [
         }
       ],
       'computed' => [
+        'endpoint' => function() {
+          return kirby()->option('pju.webhooks.endpoint');
+        },
         'initialStatus' => function() {
           return Webhooks::getStatus($this->hook['name']);
         },
@@ -80,23 +83,23 @@ Kirby::plugin('pju/webhooks', [
     ]
   ],
   'routes' => function($kirby) {
-    $route = $kirby->option('pju.webhooks.route');
+    $endpoint = $kirby->option('pju.webhooks.endpoint');
 
-    if (!$route)
+    if (!$endpoint)
     {
-      throw new InvalidArgumentException('Webhook plugin route is not defined');
+      throw new InvalidArgumentException('Webhook plugin endpoint is not defined');
     }
 
     return [
       [
-        'pattern' => $route . '/(:any)/status',
+        'pattern' => $endpoint . '/(:any)/status',
         'action'  => function($hook) {
           return Webhooks::getStatus($hook);
         },
         'method' => 'GET'
       ],
       [
-        'pattern' => $route . '/(:any)/(:any)',
+        'pattern' => $endpoint . '/(:any)/(:any)',
         'action'  => function($hook, $status) {
           Webhooks::setStatus($hook, $status);
           return [$status];

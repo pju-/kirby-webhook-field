@@ -24,7 +24,7 @@ You an also use this as a way to protect the API from unwanted access.
 
 Example:
 ```
-'pju.kirby-webhooks.route' => 'deploy-YOUR_API_TOKEN'
+'pju.webhooks.endpoint' => 'deploy-YOUR_API_TOKEN'
 ```
 
 **Hooks**
@@ -60,10 +60,10 @@ If you leave the ```hook``` option empty instead, it will default to the first h
 
 Add two deploy notifications on netlify:
 
-- Outgoing webhook: **Deploy succeeded** - URL: `https://www.yoursite.com/api/YOUR_ROUTE/success`
-- Outgoing webhook: **Deploy failed** - URL: `https://www.yoursite.com/api/YOUR_ROUTE/error`
+- Outgoing webhook: **Deploy succeeded** - URL: `https://www.yoursite.com/api/YOUR_ENDPOINT/success`
+- Outgoing webhook: **Deploy failed** - URL: `https://www.yoursite.com/api/YOUR_ENDPOINT/error`
 
-`YOUR_ROUTE` is the route from your `config.php`.
+`YOUR_ENDPOINT` is the endpoint from your `config.php`.
 You do not need to set a JWS secret. Use a secret key in the route name instead.
 
 
@@ -74,7 +74,7 @@ You do not need to set a JWS secret. Use a secret key in the route name instead.
 
 Name | Type | Default | Description
 --- | --- | --- | ---
-route | `String` | `'webhooks'` | The API endpoint for incoming webhooks. The endpoints for updating the status to success/error will be `https://www.yoursite.com/api/YOUR_ROUTE/success` and `https://www.yoursite.com/api/YOUR_ROUTE/error` (unless you have configured a [custom API location](https://getkirby.com/docs/guide/api/introduction#custom-api-location) in Kirby).
+endpoint | `String` | `'webhooks'` | The API endpoint for incoming webhooks. The endpoints for updating the status to success/error will be `https://www.yoursite.com/api/YOUR_ROUTE/success` and `https://www.yoursite.com/api/YOUR_ROUTE/error` (unless you have configured a [custom API location](https://getkirby.com/docs/guide/api/introduction#custom-api-location) in Kirby).
 hooks | `Array` | `[]` | An array of hooks that you want to be able to trigger. Each entry consists of a structured array of (see [webhook structure](#webhook-structure))
 lables | `Array` | [see below]() | An array of translations. Keys and default values can be found [here]().
 

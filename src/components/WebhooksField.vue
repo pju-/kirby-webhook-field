@@ -36,10 +36,20 @@ export default {
     initialStatus: Object,
     label: String,
     name: String,
-    hook: Object,
+    hook: {
+      type: Object,
+      required: true
+    },
+    endpoint: {
+      type: String,
+      required: true
+    },
     deployed: String,
     changed: String,
-    labels: Object
+    labels: {
+      type: Object,
+      required: true
+    }
   },
   data() {
     return {
@@ -71,7 +81,7 @@ export default {
       request(url, this.hook.method, success, error);
     },
     getStatus() {
-      const url = `/webhooks/${this.hook.name}/status`;
+      const url = `/${this.endpoint}/${this.hook.name}/status`;
       const success = (http) => {
         const response = JSON.parse(http.response);
 
@@ -86,7 +96,7 @@ export default {
     setStatus(status) {
       this.status = status;
 
-      const url = `/webhooks/${this.hook.name}/${status}`;
+      const url = `/${this.endpoint}/${this.hook.name}/${status}`;
       const success = () => console.info('Webhook status successfully updated');
       const error = () => console.info('There was an error with updating the status :(');
 
