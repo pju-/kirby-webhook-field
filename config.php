@@ -92,14 +92,16 @@ Kirby::plugin('pju/webhooks', [
         'pattern' => $route . '/(:any)/status',
         'action'  => function($hook) {
           return Webhooks::getStatus($hook);
-        }
+        },
+        'method' => 'GET'
       ],
       [
         'pattern' => $route . '/(:any)/(:any)',
         'action'  => function($hook, $status) {
           Webhooks::setStatus($hook, $status);
           return [$status];
-        }
+        },
+        'method' => 'POST|UPDATE'
       ],
     ];
   }
