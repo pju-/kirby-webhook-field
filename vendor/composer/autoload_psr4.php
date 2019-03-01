@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'pju\\' => array($baseDir . '/classes'),
+    'Kirby\\' => array($vendorDir . '/getkirby/composer-installer/src'),
 );

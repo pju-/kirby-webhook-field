@@ -2,3 +2,24 @@
 node_modules
 .idea
 .cache
+
+# composer
+/vendor/**/.*
+/vendor/**/*.json
+/vendor/**/*.txt
+/vendor/**/*.md
+/vendor/**/*.yml
+/vendor/**/*.yaml
+/vendor/**/*.xml
+/vendor/**/*.dist
+/vendor/**/readme.php
+/vendor/**/LICENSE
+/vendor/**/COPYING
+/vendor/**/VERSION
+/vendor/**/docs/*
+/vendor/**/example/*
+/vendor/**/examples/*
+/vendor/**/test/*
+/vendor/**/tests/*
+/vendor/**/php4/*
+/vendor/getkirby/composer-installer

@@ -119,4 +119,3 @@ Kirby::plugin('pju/webhooks', [
     ];
   }
 ]);
-
