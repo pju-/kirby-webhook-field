@@ -1,6 +1,6 @@
 <?php
 
-namespace pju;
+namespace pju\KirbyWebhooks;
 
 use Kirby\Exception\InvalidArgumentException;
 

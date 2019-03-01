@@ -9,15 +9,6 @@
             "email": "hi@philipjonas.cc"
         }
     ],
-    "autoload": {
-        "files": ["config.php"],
-        "psr-4": {
-            "pju\\": "classes/"
-        }
-    },
-    "config": {
-        "optimize-autoloader": true
-    },
     "require": {
         "getkirby/composer-installer": "^1.1"
     },
