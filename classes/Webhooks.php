@@ -8,9 +8,9 @@ class Webhooks
 {
   private static $allowed = ['success', 'progress', 'error'];
 
-  private static function formatHookConfig(array $hooks, string $name): array
+  private static function formatHookConfig(array $hooks, string $hookName): array
   {
-    $config = $hooks[$name];
+    $config = $hooks[$hookName];
 
     if (is_string($config))
     {
@@ -22,10 +22,10 @@ class Webhooks
       $config['method'] = 'POST';
     }
 
-    return array_merge(['name' => $name], $config);
+    return array_merge(['name' => $hookName], $config);
   }
 
-  public static function getHook(string $name): array
+  public static function getHook(string $hookName): array
   {
     $hooks = kirby()->option('pju.webhooks.hooks');
 
@@ -33,42 +33,47 @@ class Webhooks
       return ['name' => 'No hooks'];
     }
 
-    if ($name === '') {
+    if ($hookName === '') {
       reset($hooks);
       $firstKey = key($hooks);
 
       return Webhooks::formatHookConfig($hooks, $firstKey);
     }
 
-    if (!isset($hooks[$name])) {
+    if (!isset($hooks[$hookName])) {
       return ['name' => 'Hook not found'];
     };
 
-    return Webhooks::formatHookConfig($hooks, $name);
+    return Webhooks::formatHookConfig($hooks, $hookName);
   }
 
-  public static function setStatus(string $hook, string $status)
+  public static function setState(string $hookName, string $status)
   {
     if (!in_array($status, Webhooks::$allowed))
     {
       throw new InvalidArgumentException('Status not allowed');
     }
 
-    // TODO: Handling new status from route
-
     $kirby = kirby();
     $kirby->impersonate('kirby');
     $cache = $kirby->cache('pju.webhooks');
 
-    $cache->set($hook, [
-      'status' => $status,
-      'hookUpdated' => time()
-    ]);
+    $state = $cache->get($hookName);
+
+    $state['status'] = $status;
+
+    // Don't save the time if we update to success - we want to know when the hook was triggered
+    if ($status !== 'success')
+    {
+      $state['updated'] = time();
+    }
+
+    $cache->set($hookName, $state);
 
     return 'success';
   }
 
-  public static function getStatus(string $hookName): array
+  public static function getState(string $hookName): array
   {
     $hooks = kirby()->option('pju.webhooks.hooks');
 
@@ -81,8 +86,8 @@ class Webhooks
     $kirby = kirby();
     $kirby->impersonate('kirby');
     $cache = $kirby->cache('pju.webhooks');
-    $cachedStatus = $cache->get($hookName);
+    $state = $cache->get($hookName);
 
-    return $cachedStatus ? $cachedStatus : ['status' => 'new'];
+    return $state ? $state : ['status' => 'new', 'updated' => 0];
   }
 }

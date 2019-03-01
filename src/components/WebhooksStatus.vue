@@ -1,5 +1,5 @@
 <template>
-  <div
+  <k-box
     class="pju-webhooks--status"
     :class="[ statusClass, iconClass ]"
   >
@@ -20,9 +20,15 @@
         </small>
       </p>
 
+      <p class="pju-webhooks--status--description">
+        <small>
+          {{ updatedText }}
+        </small>
+      </p>
+
     </div>
 
-  </div>
+  </k-box>
 </template>
 
 <script>
@@ -30,6 +36,7 @@ export default {
   props: {
     status: String,
     hookName: String,
+    hookUpdated: Number,
     labels: Object
   },
   computed: {
@@ -68,15 +75,30 @@ export default {
 
       let text = this.labels[this.status].text;
 
-      text = text.replace('%hookName%', this.hookName);
-
-      return text;
+      return text.replace('%hookName%', this.hookName);
     },
     statusClass() {
       return `status-${this.status}`;
     },
     iconClass() {
       return `icon-${this.icon}`;
+    },
+    updatedText() {
+      const date = new Date(this.hookUpdated * 1000);
+
+      const options = {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric'
+      };
+
+      if (typeof window === "undefined" || !window.Intl || typeof window.Intl !== "object") {
+        return '';
+      }
+
+      return new Intl.DateTimeFormat(undefined, options).format(date);
     }
   }
 };

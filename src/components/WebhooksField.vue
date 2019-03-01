@@ -6,6 +6,7 @@
 
     <WebhooksStatus
       :status="status"
+      :hookUpdated="hookUpdatedLive"
       :hookName="hook.name"
       :labels="labels"
     />
@@ -44,8 +45,8 @@ export default {
       type: String,
       required: true
     },
-    deployed: String,
-    changed: String,
+    contentUpdated: Number,
+    hookUpdated: Number,
     labels: {
       type: Object,
       required: true
@@ -53,8 +54,9 @@ export default {
   },
   data() {
     return {
-      status: this.initialStatus.status,
-      timer: null
+      status: this.contentUpdated > this.hookUpdated ? 'outdated' : this.initialStatus,
+      timer: null,
+      hookUpdatedLive: this.hookUpdated
     }
   },
   computed: {
@@ -87,6 +89,7 @@ export default {
 
         if (response && response.status !== this.status) {
           this.status = response.status;
+          this.updateTime();
         }
       };
       const error = () => console.info('There was an error with checking the status :(');
@@ -95,12 +98,19 @@ export default {
     },
     setStatus(status) {
       this.status = status;
+      this.updateTime();
 
       const url = `/${this.endpoint}/${this.hook.name}/${status}`;
       const success = () => console.info('Webhook status successfully updated');
       const error = () => console.info('There was an error with updating the status :(');
 
       request(url, 'UPDATE', success, error);
+    },
+    updateTime() {
+      // if we set the status to someting else than success, we set the new time
+      if (this.status !== 'success') {
+        this.hookUpdatedLive = Date.now() / 1000;
+      }
     }
   },
   watch: {

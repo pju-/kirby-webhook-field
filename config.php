@@ -67,13 +67,16 @@ Kirby::plugin('pju/webhooks', [
           return kirby()->option('pju.webhooks.endpoint');
         },
         'initialStatus' => function() {
-          return Webhooks::getStatus($this->hook['name']);
+          $state = Webhooks::getState($this->hook['name']);
+
+          return $state['status'];
         },
-        'hooksChanged' => function() {
-          $cache = kirby()->cache('pju.webhooks');
-          return $cache->get('hooksChanged');
+        'hookUpdated' => function() {
+          $state = Webhooks::getState($this->hook['name']);
+
+          return isset($state['updated']) ? $state['updated'] : 0;
         },
-        'contentChanged' => function() {
+        'contentUpdated' => function() {
           return kirby()->site()->modified();
         },
         'labels' => function() {
@@ -94,14 +97,21 @@ Kirby::plugin('pju/webhooks', [
       [
         'pattern' => $endpoint . '/(:any)/status',
         'action'  => function($hook) {
-          return Webhooks::getStatus($hook);
+          return Webhooks::getState($hook);
         },
         'method' => 'GET'
       ],
       [
+        'pattern' => $endpoint . '/(:any)/dummy',
+        'action'  => function($hook) {
+          return [''];
+        },
+        'method' => 'POST'
+      ],
+      [
         'pattern' => $endpoint . '/(:any)/(:any)',
         'action'  => function($hook, $status) {
-          Webhooks::setStatus($hook, $status);
+          Webhooks::setState($hook, $status);
           return [$status];
         },
         'method' => 'POST|UPDATE'
