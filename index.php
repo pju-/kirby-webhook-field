@@ -54,7 +54,7 @@ Kirby::plugin('pju/webhooks', [
         'cache' => true
     ],
     'fields' => [
-        'webhook' => [
+        'webhooks' => [
             'props' => [
                 'label' => function (string $title = 'Deploy Status') {
                     return $title;
@@ -89,6 +89,16 @@ Kirby::plugin('pju/webhooks', [
             ]
         ]
     ],
+    /*
+    'api' => [
+        'routes' => [
+            'pattern' => 'site-modified',
+            'action'  => function () {
+                return kirby()->site()->modified();
+            }
+        ]
+    ],
+    */
     'routes' => function($kirby) {
         $endpoint = $kirby->option('pju.webhooks.endpoint');
 
