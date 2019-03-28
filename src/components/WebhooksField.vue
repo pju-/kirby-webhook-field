@@ -104,7 +104,7 @@ export default {
       const success = () => console.info('Webhook status successfully updated');
       const error = () => console.info('There was an error with updating the status :(');
 
-      request(url, 'UPDATE', success, error);
+      request(url, 'POST', success, error);
     },
     updateTime() {
       // if we set the status to someting else than success, we set the new time
