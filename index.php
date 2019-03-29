@@ -116,13 +116,6 @@ Kirby::plugin('pju/webhooks', [
                 'method' => 'GET'
             ],
             [
-                'pattern' => $endpoint . '/(:any)/dummy',
-                'action'  => function($hook) {
-                    return [''];
-                },
-                'method' => 'POST'
-            ],
-            [
                 'pattern' => $endpoint . '/(:any)/(:any)',
                 'action'  => function($hook, $status) {
                     Webhooks::setState($hook, $status);
