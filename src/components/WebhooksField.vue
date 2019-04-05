@@ -2,7 +2,7 @@
   <k-field
     class="pju-webhooks"
     :class="{ monochrome: monochrome }"
-    :label='label'
+    v-bind="$props"
   >
 
     <WebhooksStatus
@@ -31,6 +31,7 @@ import WebhooksStatus from './WebhooksStatus.vue';
 import { request } from '../helpers/request.js';
 
 export default {
+  inheritAttrs: false,
   components: {
     WebhooksStatus
   },
@@ -53,8 +54,7 @@ export default {
       required: true
     },
     debug: Boolean,
-    monochrome:  Boolean,
-    payload: String
+    monochrome:  Boolean
   },
   data() {
     return {

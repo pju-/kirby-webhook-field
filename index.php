@@ -59,6 +59,9 @@ Kirby::plugin('pju/webhooks', [
                 'label' => function (string $title = 'Deploy Status') {
                     return $title;
                 },
+                'name' => function (string $name = 'webhooks') {
+                    return $name;
+                },
                 'hook' => function (string $name = '') {
                     return Webhooks::getHook($name);
                 },
