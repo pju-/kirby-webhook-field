@@ -45,6 +45,8 @@ class Webhooks
             $config['payload'] = $payload();
         }
 
+        $config['useOutdated'] = $config['useOutdated'] ?? true;
+
         return array_merge(['name' => $hookName], $config);
     }
 
