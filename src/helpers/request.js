@@ -1,15 +1,20 @@
-export function request(url, method, successHandler, errorHandler) {
+export function request(url, method, successHandler, errorHandler, payload) {
   const http = new XMLHttpRequest();
 
   http.open(method, url, true);
 
   http.onreadystatechange = () => {
-    if (http.status == 200 && http.readyState == 4) {
+    if (http.readyState == 4 && http.status == 200) {
       if (successHandler) successHandler(http);
-    } else if (http.status !== 200) {
+    } else if (http.readyState == 4 && http.status !== 200) {
       if (errorHandler) errorHandler(http);
     }
   };
 
-  http.send();
+  if (payload) {
+    http.setRequestHeader("Content-Type", "application/json");
+    http.send(JSON.stringify(payload));
+  } else {
+    http.send();
+  }
 }

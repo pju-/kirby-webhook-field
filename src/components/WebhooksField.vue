@@ -1,6 +1,7 @@
 <template>
   <k-field
     class="pju-webhooks"
+    :class="{ monochrome: monochrome }"
     :label='label'
   >
 
@@ -34,7 +35,7 @@ export default {
     WebhooksStatus
   },
   props: {
-    initialStatus: Object,
+    statusInitial: Object,
     label: String,
     name: String,
     hook: {
@@ -45,18 +46,22 @@ export default {
       type: String,
       required: true
     },
-    contentUpdated: Number,
+    siteModified: Number,
     hookUpdated: Number,
     labels: {
       type: Object,
       required: true
-    }
+    },
+    debug: Boolean,
+    monochrome:  Boolean,
+    payload: String
   },
   data() {
     return {
-      status: this.contentUpdated > this.hookUpdated ? 'outdated' : this.initialStatus,
+      statusLive: this.statusInitial,
       timer: null,
-      hookUpdatedLive: this.hookUpdated
+      hookUpdatedLive: this.hookUpdated,
+      siteModifiedLive: this.siteModified
     }
   },
   computed: {
@@ -67,50 +72,80 @@ export default {
     },
     ctaDisabled() {
       return ['hooksEmpty', 'hookNotfound', 'hookNoUrl'].includes(this.status);
+    },
+    status() {
+      return this.siteModifiedLive > this.hookUpdatedLive ? 'outdated' : this.statusLive
     }
   },
   methods: {
     triggerHook() {
-      this.setStatus('progress');
-
       const url = this.hook.url;
-      const success = () => console.info('Webhook triggered');
-      const error = () => {
-        console.info('Could not reach webhook URL');
-        this.setStatus('error');
-      };
 
-      request(url, this.hook.method, success, error);
-    },
-    getStatus() {
-      const url = `/${this.endpoint}/${this.hook.name}/status`;
       const success = (http) => {
         const response = JSON.parse(http.response);
 
-        if (response && response.status !== this.status) {
-          this.status = response.status;
+        this.setStatus('progress', response);
+        this.log(`hook ${this.hook.name} started`);
+      };
+      const error = (http) => {
+        this.setStatus('error', http.response);
+        this.log('could not reach webhook URL', true);
+      };
+
+      request(url, this.hook.method, success, error, this.hook.payload);
+    },
+    getStatus() {
+      const url = `/${this.endpoint}/${this.hook.name}/status`;
+
+      const success = (http) => {
+        const response = JSON.parse(http.response);
+
+        if (response && response.status !== this.statusLive) {
+          this.statusLive = response.status;
           this.updateTime();
         }
       };
-      const error = () => console.info('There was an error with checking the status :(');
+      const error = () => this.log('there was an error with checking the status :(', true);
 
       request(url, 'GET', success, error);
     },
-    setStatus(status) {
-      this.status = status;
+    getSiteModified() {
+      const url = `/${this.endpoint}/site-modified`;
+
+      const success = (http) => {
+        const response = JSON.parse(http.response);
+
+        if (response && response.modified) {
+          this.siteModifiedLive = response.modified;
+        }
+      };
+      const error = () => this.log('could not get the time the site was last modified :(', true);
+
+      request(url, 'GET', success, error);
+    },
+    setStatus(status, payload = null) {
+      this.statusLive = status;
       this.updateTime();
 
       const url = `/${this.endpoint}/${this.hook.name}/${status}`;
-      const success = () => console.info('Webhook status successfully updated');
-      const error = () => console.info('There was an error with updating the status :(');
 
-      request(url, 'POST', success, error);
+      const success = (http) => this.log(http.response);
+      const error = () => this.log('there was an error with updating the status :(', true);
+
+      request(url, 'POST', success, error, payload);
     },
     updateTime() {
       // if we set the status to someting else than success, we set the new time
-      if (this.status !== 'success') {
+      if (this.statusLive !== 'success') {
         this.hookUpdatedLive = Date.now() / 1000;
       }
+    },
+    log(message, error = false) {
+      if (!this.debug) return;
+
+      const logger = error ? console.warn : console.log;
+
+      logger(message);
     }
   },
   watch: {
@@ -118,7 +153,11 @@ export default {
       immediate: true,
       handler(newVal) {
         if (newVal === 'progress') {
+          // Start listening if the webhook ran successfully or if there where errors
           this.timer = setInterval(this.getStatus, 1000);
+        } else if (newVal === 'success' || newVal === 'error') {
+          // Start listening if there are new changes
+          this.timer = setInterval(this.getSiteModified, 1000);
         } else {
           clearInterval(this.timer);
         }

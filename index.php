@@ -62,6 +62,9 @@ Kirby::plugin('pju/webhooks', [
                 'hook' => function (string $name = '') {
                     return Webhooks::getHook($name);
                 },
+                'debug' => function (bool $debugEnabled = true) {
+                    return $debugEnabled;
+                },
                 'monochrome' => function (bool $isMonochrome = false) {
                     return $isMonochrome;
                 }
@@ -70,7 +73,7 @@ Kirby::plugin('pju/webhooks', [
                 'endpoint' => function() {
                     return kirby()->option('pju.webhooks.endpoint');
                 },
-                'initialStatus' => function() {
+                'statusInitial' => function() {
                     $state = Webhooks::getState($this->hook['name']);
 
                     return $state['status'];
@@ -80,7 +83,7 @@ Kirby::plugin('pju/webhooks', [
 
                     return isset($state['updated']) ? $state['updated'] : 0;
                 },
-                'contentUpdated' => function() {
+                'siteModified' => function() {
                     return kirby()->site()->modified();
                 },
                 'labels' => function() {
@@ -89,16 +92,6 @@ Kirby::plugin('pju/webhooks', [
             ]
         ]
     ],
-    /*
-    'api' => [
-        'routes' => [
-            'pattern' => 'site-modified',
-            'action'  => function () {
-                return kirby()->site()->modified();
-            }
-        ]
-    ],
-    */
     'routes' => function($kirby) {
         $endpoint = $kirby->option('pju.webhooks.endpoint');
 
@@ -118,11 +111,27 @@ Kirby::plugin('pju/webhooks', [
             [
                 'pattern' => $endpoint . '/(:any)/(:any)',
                 'action'  => function($hook, $status) {
-                    Webhooks::setState($hook, $status);
-                    return [$status];
+                    $message = Webhooks::setState($hook, $status);
+
+                    try {
+                        Webhooks::runCallback($hook, $status);
+                    } catch (Throwable $e) {
+                        $message = 'error running callback for ' . $hook . ': ' . $e->getMessage();
+                    }
+
+                    return $message;
                 },
-                'method' => 'POST|UPDATE'
+                'method' => 'POST'
             ],
+            [
+                'pattern' => $endpoint . '/site-modified',
+                'action'  => function () {
+                    return [
+                        'modified' => kirby()->site()->modified()
+                    ];
+                },
+                'method' => 'GET'
+            ]
         ];
     }
 ]);
