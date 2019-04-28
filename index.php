@@ -12,43 +12,43 @@ Kirby::plugin('pju/webhooks', [
         'labels' => [
             'new' => [
                 'name' => 'New',
-                'cta'  => 'Deploy now',
-                'text'  => 'The site has not been deployed yet.',
+                'cta' => 'Deploy now',
+                'text' => 'The site has not been deployed yet.',
             ],
             'progress' => [
                 'name' => 'Site is being deployed',
-                'cta'  => 'Trigger new deploy',
-                'text'  => 'The site is being deployed.',
+                'cta' => 'Trigger new deploy',
+                'text' => 'The site is being deployed.',
             ],
             'success' => [
                 'name' => 'Site is live',
-                'cta'  => 'Deploy again',
-                'text'  => 'The site is live and up to date.',
+                'cta' => 'Deploy again',
+                'text' => 'The site is live and up to date.',
             ],
             'error' => [
                 'name' => 'Error',
-                'cta'  => 'Trigger new deploy',
-                'text'  => 'There was an error while trying to deploy.',
+                'cta' => 'Trigger new deploy',
+                'text' => 'There was an error while trying to deploy.',
             ],
             'outdated' => [
                 'name' => 'Undeployed changes',
-                'cta'  => 'Deploy now',
-                'text'  => 'There where changes after the last deployment.',
+                'cta' => 'Deploy now',
+                'text' => 'There where changes after the last deployment.',
             ],
             'hooksEmpty' => [
                 'name' => 'Hooks are not defined',
-                'cta'  => 'Deploy not available',
-                'text'  => 'You need to set the hooks in your Kirby configuration.',
+                'cta' => 'Deploy not available',
+                'text' => 'You need to set the hooks in your Kirby configuration.',
             ],
             'hookNotfound' => [
                 'name' => 'Service not found',
-                'cta'  => 'Deploy not available',
-                'text'  => 'The hook "%hookName%" was not found.',
+                'cta' => 'Deploy not available',
+                'text' => 'The hook "%hookName%" was not found.',
             ],
             'hookNoUrl' => [
                 'name' => 'No URL set',
-                'cta'  => 'Deploy not available',
-                'text'  => 'The url for the hook "%hookName%" is not defined.',
+                'cta' => 'Deploy not available',
+                'text' => 'The url for the hook "%hookName%" is not defined.',
             ],
         ],
         'cache' => true
@@ -73,47 +73,54 @@ Kirby::plugin('pju/webhooks', [
                 }
             ],
             'computed' => [
-                'endpoint' => function() {
+                'endpoint' => function () {
                     return kirby()->option('pju.webhooks.endpoint');
                 },
-                'statusInitial' => function() {
+                'statusInitial' => function () {
                     $state = Webhooks::getState($this->hook['name']);
 
                     return $state['status'];
                 },
-                'hookUpdated' => function() {
+                'hookUpdated' => function () {
                     $state = Webhooks::getState($this->hook['name']);
 
                     return isset($state['updated']) ? $state['updated'] : 0;
                 },
-                'siteModified' => function() {
+                'siteModified' => function () {
                     return kirby()->site()->modified();
                 },
-                'labels' => function() {
-                    return kirby()->option('pju.webhooks.labels');
+                'labels' => function () {
+                    $labels = kirby()->option('pju.webhooks.labels');
+
+                    return array_map(function ($labels) {
+                        return array_map(function ($label) {
+                            $name = $this->name;
+
+                            return str_replace('%hookName%', $name, $label);
+                        }, $labels);
+                    }, $labels);
                 }
             ]
         ]
     ],
-    'routes' => function($kirby) {
+    'routes' => function ($kirby) {
         $endpoint = $kirby->option('pju.webhooks.endpoint');
 
-        if (!$endpoint)
-        {
+        if (!$endpoint) {
             throw new InvalidArgumentException('Webhook plugin endpoint is not defined');
         }
 
         return [
             [
                 'pattern' => $endpoint . '/(:any)/status',
-                'action'  => function($hook) {
+                'action' => function ($hook) {
                     return Webhooks::getState($hook);
                 },
                 'method' => 'GET'
             ],
             [
                 'pattern' => $endpoint . '/(:any)/(:any)',
-                'action'  => function($hook, $status) {
+                'action' => function ($hook, $status) {
                     $message = Webhooks::setState($hook, $status);
 
                     try {
@@ -128,7 +135,7 @@ Kirby::plugin('pju/webhooks', [
             ],
             [
                 'pattern' => $endpoint . '/site-modified',
-                'action'  => function () {
+                'action' => function () {
                     return [
                         'modified' => kirby()->site()->modified()
                     ];

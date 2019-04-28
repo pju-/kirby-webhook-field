@@ -73,9 +73,7 @@ export default {
     statusText() {
       if (!this.labels[this.status]) return '';
 
-      let text = this.labels[this.status].text;
-
-      return text.replace('%hookName%', this.hookName);
+      return this.labels[this.status].text;
     },
     statusClass() {
       return `status-${this.status}`;
