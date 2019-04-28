@@ -16,7 +16,7 @@ class Webhooks
      *
      * @var array
      */
-    private static $allowed = ['success', 'progress', 'error'];
+    private static $allowedStates = ['success', 'progress', 'error'];
 
     /**
      * Format the configuration for a certain hook
@@ -88,7 +88,7 @@ class Webhooks
      */
     public static function setState(string $hookName, string $status)
     {
-        if (!in_array($status, Webhooks::$allowed)) {
+        if (!in_array($status, Webhooks::$allowedStates)) {
             throw new InvalidArgumentException('Status not allowed');
         }
 
@@ -97,7 +97,6 @@ class Webhooks
         $cache = $kirby->cache('pju.webhooks');
 
         $state = $cache->get($hookName);
-
         $state['status'] = $status;
 
         // Don't save the time if we update to success - we want to know when the hook was triggered
@@ -137,11 +136,17 @@ class Webhooks
     {
         $hooks = kirby()->option('pju.webhooks.hooks');
 
-        if (!$hooks || count($hooks) === 0) return ['status' => 'hooksEmpty'];
+        if (!$hooks || count($hooks) === 0) {
+            return ['status' => 'hooksEmpty'];
+        }
 
-        if (!isset($hooks[$hookName])) return ['status' => 'hookNotfound'];
+        if (!isset($hooks[$hookName])) {
+            return ['status' => 'hookNotfound'];
+        }
 
-        if (!isset($hooks[$hookName]['url']) || !$hooks[$hookName]['url']) return ['status' => 'hookNoUrl'];
+        if (!isset($hooks[$hookName]['url']) || !$hooks[$hookName]['url']) {
+            return ['status' => 'hookNoUrl'];
+        }
 
         $kirby = kirby();
         $kirby->impersonate('kirby');
