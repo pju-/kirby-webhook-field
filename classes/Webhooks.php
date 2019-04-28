@@ -29,23 +29,20 @@ class Webhooks
         $hooks = kirby()->option('pju.webhooks.hooks');
         $config = $hooks[$hookName];
 
-        if (is_string($config))
-        {
+        if (is_string($config)) {
             $config = ['url' => $config];
         }
 
-        if (!isset($config['method']))
-        {
+        if (!isset($config['method'])) {
             $config['method'] = 'POST';
         }
 
-        if (isset($config['payload']) && is_callable($config['payload']))
-        {
+        if (isset($config['payload']) && is_callable($config['payload'])) {
             $payload = $config['payload'];
             $config['payload'] = $payload();
         }
 
-        $config['useOutdated'] = $config['useOutdated'] ?? true;
+        $config['showOutdated'] = $config['showOutdated'] ?? true;
 
         return array_merge(['name' => $hookName], $config);
     }
@@ -91,8 +88,7 @@ class Webhooks
      */
     public static function setState(string $hookName, string $status)
     {
-        if (!in_array($status, Webhooks::$allowed))
-        {
+        if (!in_array($status, Webhooks::$allowed)) {
             throw new InvalidArgumentException('Status not allowed');
         }
 
@@ -105,8 +101,7 @@ class Webhooks
         $state['status'] = $status;
 
         // Don't save the time if we update to success - we want to know when the hook was triggered
-        if ($status !== 'success')
-        {
+        if ($status !== 'success') {
             $state['updated'] = time();
         }
 
@@ -126,8 +121,7 @@ class Webhooks
     {
         $hook = Webhooks::getHook($hookName);
 
-        if (isset($hook['callback']) && is_callable($hook['callback']))
-        {
+        if (isset($hook['callback']) && is_callable($hook['callback'])) {
             $req = kirby()->request();
             $hook['callback']($status, $req);
         }
