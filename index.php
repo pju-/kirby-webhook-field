@@ -92,12 +92,12 @@ Kirby::plugin('pju/webhooks', [
                 'labels' => function () {
                     $labels = kirby()->option('pju.webhooks.labels');
 
-                    return array_map(function ($labels) {
-                        return array_map(function ($label) {
+                    return array_map(function ($label) {
+                        return array_map(function ($text) {
                             $name = $this->name;
 
-                            return str_replace('%hookName%', $name, $label);
-                        }, $labels);
+                            return str_replace('%hookName%', $name, $text);
+                        }, $label);
                     }, $labels);
                 }
             ]
