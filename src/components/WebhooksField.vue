@@ -74,7 +74,7 @@ export default {
       return ['hooksEmpty', 'hookNotfound', 'hookNoUrl'].includes(this.status);
     },
     status() {
-      return (this.hook.useOutdated && this.siteModifiedLive > this.hookUpdatedLive) ? 'outdated' : this.statusLive
+      return (this.hook.showOutdated && this.siteModifiedLive > this.hookUpdatedLive) ? 'outdated' : this.statusLive
     }
   },
   methods: {
@@ -155,7 +155,7 @@ export default {
         if (newVal === 'progress') {
           // Start listening if the webhook ran successfully or if there where errors
           this.timer = setInterval(this.getStatus, 1000);
-        } else if (this.hook.useOutdated && (newVal === 'success' || newVal === 'error')) {
+        } else if (this.hook.showOutdated && (newVal === 'success' || newVal === 'error')) {
           // Start listening if there are new changes
           this.timer = setInterval(this.getSiteModified, 1000);
         } else {
