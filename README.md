@@ -3,6 +3,8 @@
 This plugin provides a panel field for [Kirby CMS](https://getkirby.com/). Use it to easily trigger [webhooks](https://en.wikipedia.org/wiki/Webhook) from the Kirby panel.<br>
 Probably the most common use case for a webhook would be to trigger a build or deploy mechanism.
 
+![](kirby-webhooks.gif)
+
 ## Docs
 
 [Quickstart guide](https://github.com/pju-/kirby-webhooks/tree/master/docs/quickstart.md).<br>
