@@ -1,0 +1,18 @@
+{
+    "name": "pju/kirby-webhooks",
+    "description": "A Kirby 3 plugin providing a field to easily use webhooks, e.g. for deploying your site to services such as Netlify ",
+    "type": "kirby-plugin",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Philip Jonas Ulrich",
+            "email": "hi@philipjonas.cc"
+        }
+    ],
+    "require": {
+        "getkirby/composer-installer": "^1.1"
+    },
+    "extra": {
+        "installer-name": "webhooks"
+    }
+}

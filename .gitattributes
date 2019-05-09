@@ -1,0 +1,7 @@
+.gitignore export-ignore
+.gitattributes export-ignore
+
+src export-ignore
+kirby-webhooks.gif export-ignore
+package.json export-ignore
+package-lock.json export-ignore
