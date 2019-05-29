@@ -134,7 +134,7 @@ class Webhooks
      */
     public static function getState(string $hookName): array
     {
-        $hooks = kirby()->option('pju.webhooks.hooks');
+        $hooks = kirby()->option('pju.kirby-webhooks.hooks');
 
         if (!$hooks || count($hooks) === 0) {
             return ['status' => 'hooksEmpty'];
