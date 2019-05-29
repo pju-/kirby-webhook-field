@@ -15,7 +15,7 @@ You will need to provide some base configuration for you Kirby installation in `
 
 Example:
 ```php
-'pju.kirby-webhooks.hooks' => [
+'pju.webhooks.hooks' => [
     'netlify_deploy' => [
         'url' => 'https://api.netlify.com/build_hooks/YOUR_BUILD_HOOK'
     ]
