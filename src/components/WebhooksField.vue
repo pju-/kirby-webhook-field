@@ -135,7 +135,7 @@ export default {
       request(url, 'POST', success, error, payload);
     },
     updateTime() {
-      // if we set the status to someting else than success, we set the new time
+      // if we set the status to something else than success, we set the new time
       if (this.statusLive !== 'success') {
         this.hookUpdatedLive = Date.now() / 1000;
       }
