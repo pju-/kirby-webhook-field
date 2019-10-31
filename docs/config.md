@@ -6,7 +6,7 @@ Name | Type | Default | Description
 --- | --- | --- | ---
 endpoint | `String` | `'webhooks'` | The endpoint for incoming webhooks (see [endpoint docs](#endpoint)).
 hooks | `Array` | `[]` | An array of hooks that you want to be able to trigger. Each entry consists of a structured array of webhook options (see [hook structure](#hook-structure))
-lables | `Array` | [see "Lables"](#labels) | An array of label names or translations.
+labels | `Array` | [see "Labels"](#labels) | An array of label names or translations.
 
 ## Endpoint
 Defines the route that will be used to update the status of hooks. Functionally this provides a webhook that reacts to incoming requests.
