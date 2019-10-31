@@ -154,12 +154,14 @@ export default {
       handler(newVal) {
         if (newVal === 'progress') {
           // Start listening if the webhook ran successfully or if there where errors
+          window.clearInterval(this.timer);
           this.timer = setInterval(this.getStatus, 1000);
         } else if (this.hook.showOutdated && (newVal === 'success' || newVal === 'error')) {
           // Start listening if there are new changes
+          window.clearInterval(this.timer);
           this.timer = setInterval(this.getSiteModified, 1000);
         } else {
-          clearInterval(this.timer);
+          window.clearInterval(this.timer);
         }
       }
     }
