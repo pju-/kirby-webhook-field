@@ -164,6 +164,9 @@ export default {
           window.clearInterval(this.timer);
         }
       }
+    },
+    beforeDestroy() {
+      window.clearInterval(this.timer);
     }
   }
 };
