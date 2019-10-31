@@ -153,6 +153,6 @@ class Webhooks
         $cache = $kirby->cache('pju.webhooks');
         $state = $cache->get($hookName);
 
-        return $state ? $state : ['status' => 'new', 'updated' => 0];
+        return $state ? $state : ['status' => 'new', 'updated' => null];
     }
 }

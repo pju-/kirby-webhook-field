@@ -74,7 +74,13 @@ export default {
       return ['hooksEmpty', 'hookNotfound', 'hookNoUrl'].includes(this.status);
     },
     status() {
-      return (this.hook.showOutdated && this.siteModifiedLive > this.hookUpdatedLive) ? 'outdated' : this.statusLive
+      return (
+          this.hook.showOutdated
+          && !(this.statusLive === 'new')
+          && this.siteModifiedLive > this.hookUpdatedLive
+        )
+        ? 'outdated'
+        : this.statusLive
     }
   },
   methods: {
