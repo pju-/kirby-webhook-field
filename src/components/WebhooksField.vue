@@ -82,7 +82,7 @@ export default {
       const url = this.hook.url;
 
       const success = (http) => {
-        const response = JSON.parse(http.response);
+        const response = http.response ? JSON.parse(http.response) : null;
 
         this.setStatus('progress', response);
         this.log(`hook ${this.hook.name} started`);
