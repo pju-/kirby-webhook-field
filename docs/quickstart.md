@@ -1,6 +1,6 @@
 # Quick start guide
 
-Follow this guide if you want to trigger a deploy hook, for example on Netlify.
+Follow this guide if you want to trigger a deploy hook, for example on Netlify or Vercel.
 For more complex use cases, check out the [complete configuration docs](https://github.com/pju-/kirby-webhooks/tree/master/docs/config.md).
 
 ## 1 - Install
@@ -23,7 +23,7 @@ Example:
 ```
 
 ## 3 - Use Field (in Kirby blueprints)
- 
+
 Place on the blueprint of any page where you want to show it.
 
 Example:
@@ -53,16 +53,14 @@ Add two deploy notifications on Netlify:
 
 If you have changed the name of the hook, replace `netlify_deploy` with the name you chose.
 
-A POST request to these URLs will update the status of the webhook. If you want, you can protect them by changing `webhooks` to a secret parameter. 
+A POST request to these URLs will update the status of the webhook. If you want, you can protect them by changing `webhooks` to a secret parameter.
 [Learn how use a custom name for your endpoints](https://github.com/pju-/kirby-webhooks/tree/master/docs/config.md#endpoint).
 
 The use of a JWS secret is currently not supported. Use a secret key in the route name instead.
 
 ## 5 - Done
 
-You should now see the field the panel for your Kirby installation.
-It should work like this:
-
-If there are any problems, check the developer tools JS console for debugging.
+You should now see the field in the panel of your Kirby installation.
+If there are any problems, check the developer tools JS console for debugging (Make sure you have not disabled the `debug` flag in the field settings).
 
 If you want to customize anything, [check out the full options guide](https://github.com/pju-/kirby-webhooks/tree/master/docs/config.md).
