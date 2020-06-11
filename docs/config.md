@@ -12,8 +12,7 @@ labels | `Array` | [see "Labels"](#labels) | An array of label names or translat
 Defines the route that will be used to update the status of hooks. Functionally this provides a webhook that reacts to incoming requests.
 
 **I strongly recommend using this option as a way to protect the API from unwanted access.**
-Just use a secret key in the URL to protect public access to the status update.
-If you have not used
+You can use a secret key in the URL to protect public access to the status update.
 
 The endpoints for updating the status to success/error will be<br>
 `https://www.yoursite.com/ENDPOINT/HOOK_NAME/success`<br>
