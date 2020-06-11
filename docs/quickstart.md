@@ -1,6 +1,6 @@
 # Quick start guide
 
-Follow this guide if you want to trigger a deploy hook, for example on Netlify or Vercel.
+Follow this guide if you want to trigger a deploy hook, for example on Netlify or similar services.
 For more complex use cases, check out the [complete configuration docs](https://github.com/pju-/kirby-webhooks/tree/master/docs/config.md).
 
 ## 1 - Install
