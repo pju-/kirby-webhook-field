@@ -1,6 +1,6 @@
 {
   "name": "kirby-webhook-field",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Kirby field plugin providing a trigger mechanism for webhooks - allows easy deploy triggers etc",
   "main": "src/main.js",
   "repository": {
