@@ -1,14 +1,14 @@
 <?php
 
-namespace pju\KirbyWebhooks;
+namespace pju\KirbyWebhookField;
 
 use Kirby\Exception\InvalidArgumentException;
 
 /**
- * Class Webhooks
- * @package pju\KirbyWebhooks
+ * Class WebhookField
+ * @package pju\KirbyWebhookField
  */
-class Webhooks
+class WebhookField
 {
     /**
      * The allowed status codes. Lists only persisting status codes
@@ -26,7 +26,7 @@ class Webhooks
      */
     private static function formatHookConfig(string $hookName): array
     {
-        $hooks = kirby()->option('pju.webhooks.hooks');
+        $hooks = kirby()->option('pju.webhook-field.hooks');
         $config = $hooks[$hookName];
 
         if (is_string($config)) {
@@ -56,7 +56,7 @@ class Webhooks
      */
     public static function getHook(string $hookName): array
     {
-        $hooks = kirby()->option('pju.webhooks.hooks');
+        $hooks = kirby()->option('pju.webhook-field.hooks');
 
         if (!$hooks || count($hooks) === 0) {
             return ['name' => 'No hooks'];
@@ -66,7 +66,7 @@ class Webhooks
             reset($hooks);
             $firstKey = key($hooks);
 
-            return Webhooks::formatHookConfig($firstKey);
+            return WebhookField::formatHookConfig($firstKey);
         }
 
         if (!isset($hooks[$hookName])) {
@@ -74,7 +74,7 @@ class Webhooks
             return ['name' => 'Hook not found'];
         };
 
-        return Webhooks::formatHookConfig($hookName);
+        return WebhookField::formatHookConfig($hookName);
     }
 
     /**
@@ -88,13 +88,13 @@ class Webhooks
      */
     public static function setState(string $hookName, string $status)
     {
-        if (!in_array($status, Webhooks::$allowedStates)) {
+        if (!in_array($status, WebhookField::$allowedStates)) {
             throw new InvalidArgumentException('Status not allowed');
         }
 
         $kirby = kirby();
         $kirby->impersonate('kirby');
-        $cache = $kirby->cache('pju.webhooks');
+        $cache = $kirby->cache('pju.webhook-field');
 
         $state = $cache->get($hookName);
         $state['status'] = $status;
@@ -118,7 +118,7 @@ class Webhooks
      */
     public static function runCallback(string $hookName, string $status)
     {
-        $hook = Webhooks::getHook($hookName);
+        $hook = WebhookField::getHook($hookName);
 
         if (isset($hook['callback']) && is_callable($hook['callback'])) {
             $req = kirby()->request();
@@ -134,7 +134,7 @@ class Webhooks
      */
     public static function getState(string $hookName): array
     {
-        $hooks = kirby()->option('pju.webhooks.hooks');
+        $hooks = kirby()->option('pju.webhook-field.hooks');
 
         if (!$hooks || count($hooks) === 0) {
             return ['status' => 'hooksEmpty'];
@@ -150,7 +150,7 @@ class Webhooks
 
         $kirby = kirby();
         $kirby->impersonate('kirby');
-        $cache = $kirby->cache('pju.webhooks');
+        $cache = $kirby->cache('pju.webhook-field');
         $state = $cache->get($hookName);
 
         return $state ? $state : ['status' => 'new', 'updated' => null];

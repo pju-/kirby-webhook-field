@@ -1,11 +1,11 @@
 <template>
   <k-field
-    class="pju-webhooks"
+    class="pju-webhook"
     :class="{ monochrome: monochrome }"
     v-bind="$props"
   >
 
-    <WebhooksStatus
+    <WebhookStatus
       :status="status"
       :hookUpdated="hookUpdatedLive"
       :hookName="hook.name"
@@ -13,7 +13,7 @@
     />
 
     <k-button
-      class="pju-webhooks--btn"
+      class="pju-webhook--btn"
       icon="upload"
       type="submit"
       @click="triggerHook"
@@ -27,13 +27,13 @@
 </template>
 
 <script>
-import WebhooksStatus from './WebhooksStatus.vue';
+import WebhookStatus from './WebhookStatus.vue';
 import { request } from '../helpers/request.js';
 
 export default {
   inheritAttrs: false,
   components: {
-    WebhooksStatus
+    WebhookStatus
   },
   props: {
     statusInitial: Object,
@@ -179,7 +179,7 @@ export default {
 </script>
 
 <style lang="scss">
-.pju-webhooks {
+.pju-webhook {
   .visuallyhidden {
     position: absolute;
     border: 0;
@@ -194,7 +194,7 @@ export default {
   }
 }
 
-.pju-webhooks--btn {
+.pju-webhook--btn {
   display: block;
   color: #fff;
   background: #2d2f36;

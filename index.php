@@ -1,13 +1,13 @@
 <?php
 load([
-    'pju\\KirbyWebhooks\\Webhooks' => 'classes/Webhooks.php'
+    'pju\\KirbyWebhookField\\WebhookField' => 'classes/WebhookField.php'
 ], __DIR__);
 
-use \pju\KirbyWebhooks\Webhooks;
+use \pju\KirbyWebhookField\WebhookField;
 
-Kirby::plugin('pju/webhooks', [
+Kirby::plugin('pju/webhook-field', [
     'options' => [
-        'endpoint' => 'webhooks',
+        'endpoint' => 'webhook',
         'hooks' => [],
         'labels' => [
             'new' => [
@@ -54,16 +54,16 @@ Kirby::plugin('pju/webhooks', [
         'cache' => true
     ],
     'fields' => [
-        'webhooks' => [
+        'webhook' => [
             'props' => [
                 'label' => function (string $title = 'Deploy Status') {
                     return $title;
                 },
-                'name' => function (string $name = 'webhooks') {
+                'name' => function (string $name = 'webhook') {
                     return $name;
                 },
                 'hook' => function (string $name = '') {
-                    return Webhooks::getHook($name);
+                    return WebhookField::getHook($name);
                 },
                 'debug' => function (bool $debugEnabled = true) {
                     return $debugEnabled;
@@ -74,15 +74,15 @@ Kirby::plugin('pju/webhooks', [
             ],
             'computed' => [
                 'endpoint' => function () {
-                    return kirby()->option('pju.webhooks.endpoint');
+                    return kirby()->option('pju.webhook-field.endpoint');
                 },
                 'statusInitial' => function () {
-                    $state = Webhooks::getState($this->hook['name']);
+                    $state = WebhookField::getState($this->hook['name']);
 
                     return $state['status'];
                 },
                 'hookUpdated' => function () {
-                    $state = Webhooks::getState($this->hook['name']);
+                    $state = WebhookField::getState($this->hook['name']);
 
                     return isset($state['updated']) ? $state['updated'] : 0;
                 },
@@ -90,7 +90,7 @@ Kirby::plugin('pju/webhooks', [
                     return kirby()->site()->modified();
                 },
                 'labels' => function () {
-                    $labels = kirby()->option('pju.webhooks.labels');
+                    $labels = kirby()->option('pju.webhook-field.labels');
 
                     return array_map(function ($label) {
                         return array_map(function ($text) {
@@ -104,7 +104,7 @@ Kirby::plugin('pju/webhooks', [
         ]
     ],
     'routes' => function ($kirby) {
-        $endpoint = $kirby->option('pju.webhooks.endpoint');
+        $endpoint = $kirby->option('pju.webhook-field.endpoint');
 
         if (!$endpoint) {
             throw new InvalidArgumentException('Webhook plugin endpoint is not defined');
@@ -114,17 +114,17 @@ Kirby::plugin('pju/webhooks', [
             [
                 'pattern' => $endpoint . '/(:any)/status',
                 'action' => function ($hook) {
-                    return Webhooks::getState($hook);
+                    return WebhookField::getState($hook);
                 },
                 'method' => 'GET'
             ],
             [
                 'pattern' => $endpoint . '/(:any)/(:any)',
                 'action' => function ($hook, $status) {
-                    $message = Webhooks::setState($hook, $status);
+                    $message = WebhookField::setState($hook, $status);
 
                     try {
-                        Webhooks::runCallback($hook, $status);
+                        WebhookField::runCallback($hook, $status);
                     } catch (Throwable $e) {
                         $message = 'error running callback for ' . $hook . ': ' . $e->getMessage();
                     }

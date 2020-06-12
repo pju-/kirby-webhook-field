@@ -1,18 +1,18 @@
 {
-  "name": "kirby-webhooks",
-  "version": "0.6.2",
+  "name": "kirby-webhook-field",
+  "version": "1.0.2",
   "description": "Kirby field plugin providing a trigger mechanism for webhooks - allows easy deploy triggers etc",
   "main": "src/main.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pju-/kirby-webhooks.git"
+    "url": "git+https://github.com/pju-/kirby-webhook-field.git"
   },
   "author": "Philip Jonas Ullrich",
   "license": "GPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/pju-/kirby-webhooks/issues"
+    "url": "https://github.com/pju-/kirby-webhook-field/issues"
   },
-  "homepage": "https://github.com/pju-/kirby-webhooks#readme",
+  "homepage": "https://github.com/pju-/kirby-webhook-field#readme",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o index.css ] -p bundle-collapser/plugin -e src/main.js > index.js",

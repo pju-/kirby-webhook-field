@@ -1,26 +1,26 @@
 <template>
   <k-box
-    class="pju-webhooks--status"
+    class="pju-webhook--status"
     :class="[ statusClass, iconClass ]"
   >
 
     <span class="visuallyhidden">Status</span>
 
-    <k-icon class="pju-webhooks--status--icon" :type="icon" />
+    <k-icon class="pju-webhook--status--icon" :type="icon" />
 
-    <div class="pju-webhooks--status--label">
+    <div class="pju-webhook--status--label">
 
-      <p class="pju-webhooks--status--name">
+      <p class="pju-webhook--status--name">
         {{ statusName }}
       </p>
 
-      <p class="pju-webhooks--status--description">
+      <p class="pju-webhook--status--description">
         <small>
           {{ statusText }}
         </small>
       </p>
 
-      <p class="pju-webhooks--status--description">
+      <p class="pju-webhook--status--description">
         <small>
           {{ updatedText }}
         </small>
@@ -103,7 +103,7 @@ export default {
 </script>
 
 <style lang="scss">
-@keyframes pju-webhooks--anim-spin {
+@keyframes pju-webhook--anim-spin {
   0% {
     transform: rotate(0deg);
   }
@@ -112,13 +112,13 @@ export default {
   }
 }
 
-.pju-webhooks--status {
+.pju-webhook--status {
   display: flex;
   margin-top: 1rem;
   margin-bottom: 2rem;
 }
 
-.pju-webhooks--status--icon {
+.pju-webhook--status--icon {
   margin-right: 1rem;
 
   svg {
@@ -126,32 +126,32 @@ export default {
     height: 3rem;
   }
 
-  .pju-webhooks:not(.monochrome) .icon-cancel & {
+  .pju-webhook:not(.monochrome) .icon-cancel & {
     color: #c82829;
   }
 
-  .pju-webhooks .icon-loader & {
+  .pju-webhook .icon-loader & {
     color: #4271ae;
 
     svg {
-      animation: 1s pju-webhooks--anim-spin infinite linear;
+      animation: 1s pju-webhook--anim-spin infinite linear;
     }
   }
 
-  .pju-webhooks:not(.monochrome) .icon-check & {
+  .pju-webhook:not(.monochrome) .icon-check & {
     color: #5d800d;
   }
 
-  .pju-webhooks:not(.monochrome) .icon-alert & {
+  .pju-webhook:not(.monochrome) .icon-alert & {
     color: #f5871f;
   }
 }
 
-.pju-webhooks--status--name {
+.pju-webhook--status--name {
   margin-bottom: 0.5em;
 }
 
-.pju-webhooks--status--description {
+.pju-webhook--status--description {
   color: #777;
 }
 </style>

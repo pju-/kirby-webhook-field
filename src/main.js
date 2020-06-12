@@ -1,7 +1,7 @@
-import WebhooksField from './components/WebhooksField.vue';
+import WebhookField from './components/WebhookField.vue';
 
-panel.plugin('pju/webhooks', {
+panel.plugin('pju/webhook-field', {
   fields: {
-    webhooks: WebhooksField
+    webhook: WebhookField
   }
 });

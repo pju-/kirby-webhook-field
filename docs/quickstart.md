@@ -1,11 +1,11 @@
 # Quick start guide
 
 Follow this guide if you want to trigger a deploy hook, for example on Netlify or similar services.
-For more complex use cases, check out the [complete configuration docs](https://github.com/pju-/kirby-webhooks/tree/master/docs/config.md).
+For more complex use cases, check out the [complete configuration docs](https://github.com/pju-/kirby-webhook-field/tree/master/docs/config.md).
 
 ## 1 - Install
 
-Download the plugin and install it to ```/site/plugins/webhooks``` or [install as a git submodule](https://getkirby.com/docs/guide/plugins/plugin-setup-basic#the-three-plugin-installation-methods).
+[Check the readme](https://github.com/pju-/kirby-webhook-field/tree/master/docs/config.md) for installation options.
 
 ## 2 - Set General Options
 
@@ -15,7 +15,7 @@ You will need to provide some base configuration for you Kirby installation in `
 
 Example:
 ```php
-'pju.webhooks.hooks' => [
+'pju.webhook-field.hooks' => [
     'netlify_deploy' => [
         'url' => 'https://api.netlify.com/build_hooks/YOUR_BUILD_HOOK'
     ]
@@ -30,7 +30,7 @@ Example:
 ```yml
 fields:
   deploy:
-    type: webhooks
+    type: webhook
     label: Deploy on Netlify
 ```
 
@@ -46,15 +46,15 @@ Add two deploy notifications on Netlify:
 
 - Outgoing webhook: **Deploy succeeded**
 
-  URL: `https://www.yoursite.com/webhooks/netlify_deploy/success`
+  URL: `https://www.yoursite.com/webhook/netlify_deploy/success`
 - Outgoing webhook: **Deploy failed**
 
-  URL: `https://www.yoursite.com/webhooks/netlify_deploy/error`
+  URL: `https://www.yoursite.com/webhook/netlify_deploy/error`
 
 If you have changed the name of the hook, replace `netlify_deploy` with the name you chose.
 
-A POST request to these URLs will update the status of the webhook. If you want, you can protect them by changing `webhooks` to a secret parameter.
-[Learn how use a custom name for your endpoints](https://github.com/pju-/kirby-webhooks/tree/master/docs/config.md#endpoint).
+A POST request to these URLs will update the status of the webhook. If you want, you can protect them by changing `webhook` to a secret parameter.
+[Learn how use a custom name for your endpoints](https://github.com/pju-/kirby-webhook-field/tree/master/docs/config.md#endpoint).
 
 The use of a JWS secret is currently not supported. Use a secret key in the route name instead.
 
@@ -63,4 +63,4 @@ The use of a JWS secret is currently not supported. Use a secret key in the rout
 You should now see the field in the panel of your Kirby installation.
 If there are any problems, check the developer tools JS console for debugging (Make sure you have not disabled the `debug` flag in the field settings).
 
-If you want to customize anything, [check out the full options guide](https://github.com/pju-/kirby-webhooks/tree/master/docs/config.md).
+If you want to customize anything, [check out the full options guide](https://github.com/pju-/kirby-webhook-field/tree/master/docs/config.md).

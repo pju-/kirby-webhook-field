@@ -4,7 +4,7 @@ The following options are available:
 
 Name | Type | Default | Description
 --- | --- | --- | ---
-endpoint | `String` | `'webhooks'` | The endpoint for incoming webhooks (see [endpoint docs](#endpoint)).
+endpoint | `String` | `'webhook'` | The endpoint for incoming webhook (see [endpoint docs](#endpoint)).
 hooks | `Array` | `[]` | An array of hooks that you want to be able to trigger. Each entry consists of a structured array of webhook options (see [hook structure](#hook-structure))
 labels | `Array` | [see "Labels"](#labels) | An array of label names or translations.
 
@@ -21,7 +21,7 @@ and<br>
 where ENDPOINT is the configured endpoint and HOOK_NAME is the name of the hook for which the status will be updated.
 
 ## Hook Structure
-Webhooks to be run can be configured in `pju.kirby-webhooks.hooks`.
+Webhooks to be run can be configured in `pju.webhook-field.hooks`.
 The **key** in the hooks array determines the hook name. The array can take the following options:
 
 Name | Type | Default | Description
@@ -55,8 +55,8 @@ An example configuration could be:
 ```php
 <?php
 return [
-    'pju.webhooks.endpoint' => 'webhooks-4kqkcf9jhu5jn4gx',
-    'pju.webhooks.hooks' => [
+    'pju.webhook-field.endpoint' => 'webhook-4kqkcf9jhu5jn4gx',
+    'pju.webhook-field.hooks' => [
         'production' => [
             'url' => 'https://deploy-provider.dev/deploy/foo/production',
             'callback' => function($status) {
@@ -66,7 +66,7 @@ return [
             }
         ]
     ],
-    'pju.webhooks.labels' => [
+    'pju.webhook-field.labels' => [
         'success' => [
           'name' => 'Webhook %hookName% Successful',
           'cta'  => 'Run again'
@@ -81,7 +81,7 @@ The following options are available for every webhook field:
 Name | Type | Default | Description
 --- | --- | --- | ---
 label | `String` | `'Deploy Site'` | The label for the field.
-hook | `String` | - | The name of the webhook that this field triggers (using the key name of a webhook configured in `pju.webhooks.hooks`. If it is empty, the first hook will be used.
+hook | `String` | - | The name of the webhook that this field triggers (using the key name of a webhook configured in `pju.webhook-field.hooks`. If it is empty, the first hook will be used.
 monochrome | `Boolean` | `false` | Turns icons black and white.
 debug | `Boolean` | `true` | If debug logs should be echoed in the JS console.
 
@@ -91,7 +91,7 @@ An example blueprint for a webhooks field could be:
 ```yml
 fields:
     deploy:
-        type: webhooks
+        type: webhook
         label: Deploy Production Site
         hook: production
         debug: false
