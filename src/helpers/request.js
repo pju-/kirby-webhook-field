@@ -4,9 +4,9 @@ export function request(url, method, successHandler, errorHandler, payload) {
   http.open(method, url, true);
 
   http.onreadystatechange = () => {
-    if (http.readyState == 4 && http.status == 200) {
+    if (http.readyState === 4 && http.status < 400) {
       if (successHandler) successHandler(http);
-    } else if (http.readyState == 4 && http.status !== 200) {
+    } else if (http.readyState === 4) {
       if (errorHandler) errorHandler(http);
     }
   };
